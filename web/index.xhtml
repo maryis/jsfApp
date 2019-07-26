@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: JavaSchool
+  Date: 7/19/2019
+  Time: 5:48 AM
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Title</title>
+    <h:outputStylesheet library="css" name="table-style.css"/>
+</h:head>
+
+<h:body>
+    <h:form>
+        <h:inputText id="name" value="#{indexBean.person.name}" required="true" requiredMessage="*">
+            <h:message for="name" style="color: red" /></h:inputText>
+        <br/>
+        <h:inputText id="family" value="#{indexBean.person.family}" required="true" requiredMessage="*">
+            <h:message for="family" style="color: red" /></h:inputText>
+        <br/>
+        <h:selectOneRadio value="#{indexBean.person.sex}">
+            <f:selectItem itemLabel="male" itemValue="0" />
+            <f:selectItem itemLabel="female" itemValue="1"/>
+        </h:selectOneRadio>
+        <br/>
+        <h:commandButton action="#{indexBean.save}" value="add"/>
+
+        <br/>
+        <h:outputText value="#{indexBean.msg}"/>
+
+        <br/>
+    </h:form>
+    <h:form>
+
+        <h:dataTable value="#{indexBean.personList}" var="person"
+                     styleClass="order-table"
+                     headerClass="order-table-header"
+                     rowClasses="order-table-odd-row,order-table-even-row">
+
+            <h:column>
+                <f:facet name="header">ID</f:facet>
+                <h:outputLabel value="#{person.id}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">NAME</f:facet>
+                <h:inputText value="#{person.name}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">FAMILY</f:facet>
+                <h:inputText value="#{person.family}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">sex</f:facet>
+                <h:selectOneMenu value="#{person.sex}">
+                    <f:selectItem itemLabel="male" itemValue="0" />
+                    <f:selectItem itemLabel="female" itemValue="1"/>
+                </h:selectOneMenu>
+            </h:column>
+            <h:column>
+                <f:facet name="header">UPDATE</f:facet>
+                <h:commandButton action="#{indexBean.update(person)}" value="CHANGE"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">DELETE</f:facet>
+                <h:commandButton action="#{indexBean.delete(person)}" value="REMOVE"/>
+            </h:column>
+
+        </h:dataTable>
+        <h:commandButton action="#{indexBean.searchDisatch}" value="searchDispacth"/>
+        <h:commandButton action="#{indexBean.searchRedirect}" value="searchRedirect"/>
+    </h:form>
+</h:body>
+
+</html>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: JavaSchool
+  Date: 7/19/2019
+  Time: 5:48 AM
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui" >
+
+<h:head>
+    <title>Title</title>
+    <h:outputStylesheet library="css" name="table-style.css"/>
+</h:head>
+
+<h:body>
+<c:if test="#{not empty indexBean.msg}" >
+    <h:outputLabel value="#{indexBean.msg} "  style="color: red"/>
+</c:if>
+    <c:if test="#{empty indexBean.msg}" >
+    <h:outputLabel value="it is a redirect and a new indexBean and list is generated with @PostConstruct " style="color: red" />
+</c:if>
+
+        <h:dataTable value="#{indexBean.personList}" var="person"
+                     styleClass="order-table"
+                     headerClass="order-table-header"
+                     rowClasses="order-table-odd-row,order-table-even-row">
+
+            <h:column>
+                <f:facet name="header">ID</f:facet>
+                <h:outputLabel value="#{person.id}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">NAME</f:facet>
+                <h:outputText value="#{person.name}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">FAMILY</f:facet>
+                <h:outputText value="#{person.family}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">sex</f:facet>
+              <c:if test="#{person.sex eq 1}" >
+                  <h:outputText value="male" />
+              </c:if>
+                <c:if test="#{person.sex eq 0}" >
+                  <h:outputText value="female" />
+              </c:if>
+            </h:column>
+
+        </h:dataTable>
+    <h:form id="form">
+    <p:growl id="msgs" showDetail="true" />
+
+    <p:dataTable id="basicDT" var="p" value="#{indexBean.personList}">
+        <f:facet name="header">
+            PrimeFace Table
+        </f:facet>
+        <p:column headerText="Id">
+            <h:outputText value="#{p.id}" />
+        </p:column>
+        <p:column headerText="name">
+            <h:outputText value="#{p.name}" />
+        </p:column>
+        <p:column headerText="family">
+            <h:outputText value="#{p.family}" />
+        </p:column>
+        <p:column headerText="sex">
+            <h:outputText value="#{p.sex}" />
+        </p:column>
+        <p:column style="width:32px;text-align: center">
+            <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" icon="pi pi-search" title="View">
+                <f:setPropertyActionListener value="#{p}" target="#{indexBean.selectedPerson}" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>
+    <p:dialog header="Person Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="carDetail" style="text-align:center;">
+            <p:panelGrid  columns="2" rendered="#{not empty indexBean.selectedPerson}" columnClasses="label,value">
+
+                <f:facet name="header">
+                    <h:outputText value="#{indexBean.selectedPerson.id}" />
+                </f:facet>
+                <h:outputText value="Name:" />
+                <h:outputText value="#{indexBean.selectedPerson.name}" />
+
+
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+    </h:form>
+</h:body>
+
+</html>
