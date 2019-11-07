@@ -2,6 +2,7 @@ package service;
 
 import common.JPA;
 import entity.Person;
+import exception.DBException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -9,14 +10,15 @@ import javax.persistence.Query;
 import java.util.List;
 
 public class PersonService {
+
     private PersonService(){}
+
     private static PersonService personService = new PersonService();
 
     public static PersonService getInstance() {
         return personService;
     }
-    public void save(Person person)
-    {
+    public void save(Person person) throws DBException {
         EntityManager manager = JPA.getEntityManager();
         EntityTransaction transaction  =manager.getTransaction();
         transaction.begin();
@@ -26,8 +28,7 @@ public class PersonService {
         transaction.commit();
         manager.close();
     }
-    public void update(Person person)
-    {
+    public void update(Person person) throws DBException {
         EntityManager manager = JPA.getEntityManager();
         EntityTransaction transaction  =manager.getTransaction();
         transaction.begin();
@@ -37,8 +38,7 @@ public class PersonService {
         transaction.commit();
         manager.close();
     }
-    public void delete(Person person)
-    {
+    public void delete(Person person) throws DBException {
         EntityManager manager = JPA.getEntityManager();
         EntityTransaction transaction  =manager.getTransaction();
         transaction.begin();
@@ -49,8 +49,7 @@ public class PersonService {
         transaction.commit();
         manager.close();
     }
-    public List<Person> findAll()
-    {
+    public List<Person> findAll() throws DBException {
         EntityManager manager = JPA.getEntityManager();
         Query query = manager.createQuery("select entity from person entity");
         List<Person> personList = query.getResultList();

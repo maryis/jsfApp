@@ -1,6 +1,7 @@
 package bean;
 
 import entity.Person;
+import exception.DBException;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import service.PersonService;
@@ -19,6 +20,8 @@ public class IndexBean {
     private Person person=new Person();
     private String msg;
     private Person selectedPerson;
+    private List<Person> personList;
+
 
     public Person getSelectedPerson() {
         return selectedPerson;
@@ -53,27 +56,45 @@ public class IndexBean {
     }
 
     /////////////////////////////////
-    private List<Person> personList;
 
+    //@PostConstruct is the contract that guarantees that this method will be invoked only once in the bean lifecycle
+    //    Such a method take no arguments, return void
+    //the dif with constructor: it is called after all initializations and setters
     @PostConstruct
     public void init() {
-        personList = PersonService.getInstance().findAll();
+        try {
+            personList = PersonService.getInstance().findAll();
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
     }
 
     public void save() {
-        PersonService.getInstance().save(person);
+        try {
+            PersonService.getInstance().save(person);
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
         msg="added successfully";
         init();
     }
 
     public void update(Person person) {
-        PersonService.getInstance().update(person);
+        try {
+            PersonService.getInstance().update(person);
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
         msg="updated successfully";
         init();
     }
 
-    public void delete(Person person) {
-        PersonService.getInstance().delete(person);
+    public void delete(Person person) {  //returning void in action method means remain in the same page
+        try {
+            PersonService.getInstance().delete(person);
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
         msg="deleted successfully";
         init();
     }
@@ -87,7 +108,7 @@ public class IndexBean {
 
        // init();
         msg="redirected";
-        return "result.jsp?faces-redirect=true";
+        return "result.jsf?faces-redirect=true";
     }
 
     /////prime faces event
